@@ -1,6 +1,6 @@
 import logging
 from aiogram import Bot
-from config import BOT_TOKEN, ALLOWED_USERS
+from config import BOT_TOKEN, ALLOWED_USER
 
 bot = Bot(token=BOT_TOKEN)
 
