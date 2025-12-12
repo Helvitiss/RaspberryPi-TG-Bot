@@ -18,7 +18,7 @@ async def main():
     dp.include_router(handlers.monitor_router)
 
     logger.info('Бот запущен') 
-    await dp.start_polling(bot)
+    await dp.start_polling(bot, skip_updates=True)
 
-if __name__ == "main":
+if __name__ == "__main__":
     asyncio.run(main())
