@@ -6,7 +6,7 @@ import handlers
 from config import BOT_TOKEN, ALLOWED_USER
 from logging_conf import log_start
 
-#hello?
+#hello
 
 async def main():
     log_start()
