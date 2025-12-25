@@ -4,7 +4,7 @@ from aiogram import Bot
 from psutil import sensors_temperatures
 
 def get_cpu_temp() -> float:
-    temp = sensors_temperatures().get('cpu_thermal')
+    temp = sensors_temperatures().get('cpu_thermal')[0].current
 
     return temp
 
