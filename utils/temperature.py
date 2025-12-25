@@ -1,16 +1,10 @@
 import asyncio, subprocess, logging
 
 from aiogram import Bot
-from aiogram.types import Update
-
+from psutil import sensors_temperatures
 
 def get_cpu_temp() -> float:
-    result = subprocess.run(["vcgencmd", "measure_temp"],
-                            capture_output=True, text=True)
-
-    output = result.stdout
-    temp_str = output.split('=')[1]
-    temp = float(temp_str.replace('C', ''))
+    temp = sensors_temperatures()
 
     return temp
 
@@ -40,3 +34,5 @@ async def temp_watcher(
 
         await asyncio.sleep(interval)
 
+if __name__ == '__main__':
+    print(get_cpu_temp())
