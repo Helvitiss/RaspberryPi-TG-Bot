@@ -1,4 +1,7 @@
-from psutil import virtual_memory, sensors_temperatures, disk_usage
+from psutil import virtual_memory, sensors_temperatures, disk_usage, cpu_percent
+
+
+
 
 
 def get_ram_percentage() -> float:
@@ -15,3 +18,6 @@ def get_storage_percentage() -> float:
     result = disk_usage('/').percent
     return result
 
+def get_cpu_percentage() -> float:
+    result = cpu_percent(interval=1)
+    return result

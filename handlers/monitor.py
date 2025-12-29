@@ -3,7 +3,9 @@ import subprocess
 from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
-import psutil
+
+from utils.metrics import get_cpu_percentage, get_ram_percentage,get_cpu_temp,get_storage_percentage
+
 
 from config import is_allowed_user
 
@@ -16,25 +18,17 @@ async def status_handler(message: Message):
         return message.answer('У вас нет доступа')
 
 
-    cpu = psutil.cpu_percent(interval=1)
-    ram = psutil.virtual_memory().percent
-    disk = psutil.disk_usage('/').percent
-    temps = psutil.sensors_temperatures()
-    temp_str = ""
-    if "cpu-thermal" in temps:
-        temp_str = f"{temps['cpu-thermal'][0].current:.1f}°C"
-    elif temps:
-        # берем первую доступную
-        first_sensor = list(temps.values())[0][0]
-        temp_str = f"{first_sensor.current:.1f}°C"
-    else:
-        temp_str = "N/A"
+    cpu = get_cpu_percentage()
+    ram = get_ram_percentage()
+    disk = get_storage_percentage()
+    temps = get_cpu_temp()
+
     reply = (
         f"💻 Статус системы:\n"
         f"CPU: {cpu}%\n"
         f"RAM: {ram}%\n"
         f"Disk: {disk}%\n"
-        f"Temp: {temp_str}"
+        f"Temp: {temps}"
     )
     await message.answer(reply)
 
