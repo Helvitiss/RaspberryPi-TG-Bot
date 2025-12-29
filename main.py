@@ -16,13 +16,13 @@ async def main():
     dp = Dispatcher()
 
     dp.include_router(handlers.monitor_router)
+    dp.include_router(handlers.control_router)
     asyncio.create_task(
         setup_all_watchers(bot, ALLOWED_USER)
     )
 
-
-
     await startup_notification(bot, ALLOWED_USER)
+
     await dp.start_polling(bot, skip_updates=True)
 
 if __name__ == "__main__":
