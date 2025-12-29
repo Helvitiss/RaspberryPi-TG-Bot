@@ -1,11 +1,10 @@
-import asyncio, subprocess, logging
+import asyncio, logging
 
 from aiogram import Bot
 from psutil import sensors_temperatures
 
 def get_cpu_temp() -> float:
     temp = sensors_temperatures().get('cpu_thermal')[0].current
-
     return temp
 
 
@@ -14,7 +13,7 @@ async def temp_watcher(
         admin_id: int,
         threshold: float = 70.0,
         interval: int = 60):
-    """Проверка в температуры в фоне и уведомление при превышение трешхолда"""
+    """Проверка в температуры в фоне и уведомление при превышении трешхолда"""
     notified = False
 
     while True:
