@@ -58,7 +58,6 @@ async def setup_all_watchers(bot: Bot, admin_id: int):
 
 
 
-
 async def watcher(
         *,
         name: str,
