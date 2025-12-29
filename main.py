@@ -5,8 +5,7 @@ from aiogram import Bot, Dispatcher
 import handlers
 from config import BOT_TOKEN, ALLOWED_USER
 from logging_conf import log_start
-from utils.notifications import startup_notification
-from utils.temperature import temp_watcher
+from utils.notifications import startup_notification, setup_all_watchers
 
 #hello
 
@@ -18,8 +17,9 @@ async def main():
 
     dp.include_router(handlers.monitor_router)
     asyncio.create_task(
-        temp_watcher(bot, ALLOWED_USER)
+        setup_all_watchers(bot, ALLOWED_USER)
     )
+
 
 
     await startup_notification(bot, ALLOWED_USER)
