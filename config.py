@@ -10,4 +10,4 @@ ALLOWED_USER = 662529148
 
 
 def is_allowed_user(user):
-    return str(user) in ALLOWED_USER
+    return int(user) == ALLOWED_USER
