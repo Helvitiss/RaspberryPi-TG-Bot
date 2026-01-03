@@ -7,16 +7,13 @@ from aiogram.types import Message
 from utils.metrics import get_cpu_percentage, get_ram_percentage,get_cpu_temp,get_storage_percentage
 
 
-from config import is_allowed_user
+
 
 router = Router()
 
 
 @router.message(F.text == '/status')
 async def status_handler(message: Message):
-    if not is_allowed_user(message.from_user.id):
-        return message.answer('У вас нет доступа')
-
 
     cpu = get_cpu_percentage()
     ram = get_ram_percentage()
