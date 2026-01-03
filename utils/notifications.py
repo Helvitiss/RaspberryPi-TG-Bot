@@ -15,7 +15,7 @@ async def startup_notification(bot: Bot, admin_id: int):
 
     try:
         await bot.send_message(admin_id, 'Система запущена')
-        logger.info('Уведомление о запуске системы отправленно ')
+        logger.info('Уведомление о запуске системы отправлено ')
     except Exception as e:
         logger.exception(e)
 
@@ -23,8 +23,9 @@ async def startup_notification(bot: Bot, admin_id: int):
 
 
 async def setup_all_watchers(bot: Bot, admin_id: int):
-    """Функция которая запускает все процессы мониторинга Малины"""
+    """Функция, которая запускает все процессы мониторинга Малины"""
 
+    #Мониторинг нагруженности процессора
     asyncio.create_task(watcher(name='CPU',
                                 get_value=get_cpu_percentage,
                                 threshold=95,
@@ -32,6 +33,7 @@ async def setup_all_watchers(bot: Bot, admin_id: int):
                                 admin_id=admin_id,
                                 bot=bot))
 
+    #Мониторинг температуры процессора
     asyncio.create_task(watcher(name='TEMP',
                                 get_value=get_cpu_temp,
                                 threshold=75,
@@ -39,12 +41,15 @@ async def setup_all_watchers(bot: Bot, admin_id: int):
                                 admin_id=admin_id,
                                 bot=bot))
 
+    #Мониторинг количества использования оперативной пямяти
     asyncio.create_task(watcher(name='RAM',
                                 get_value=get_ram_percentage,
                                 threshold=80,
                                 format_message=ram_alert,
                                 admin_id=admin_id,
                                 bot=bot))
+
+    #Мониторинг количества свободного места на диске
     asyncio.create_task(watcher(name='DISC',
                                 get_value=get_storage_percentage,
                                 threshold=80,
@@ -67,18 +72,18 @@ async def watcher(
         bot: Bot,
         admin_id: int,
         interval: int = 60
-):
+) -> None:
     """
-    Универсальный watcher для метрик с порогом.
+    :param name: имя метрики (для логов)
+    :param get_value: функция, возвращающая текущее значение (float)
+    :param threshold: порог
+    :param format_message: функция форматирования уведомления
+    :param bot:  экземпляр Bot
+    :param admin_id: кому отправлять уведомление
+    :param interval: интервал с которым будет проведена проверка
+    :return: None
+    """
 
-    name            - имя метрики (для логов)
-    get_value       - функция, возвращающая текущее значение (float)
-    threshold       - порог
-    format_message  - функция форматирования уведомления
-    bot             - экземпляр aiogram.Bot
-    admin_id        - кому отправлять уведомление
-    interval        - интервал с которым будет проведена проверка
-    """
 
     notified = False
     logger.info(f"Запущен мониторинг {name}")

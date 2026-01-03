@@ -1,9 +1,6 @@
 from psutil import virtual_memory, sensors_temperatures, disk_usage, cpu_percent
 
 
-
-
-
 def get_ram_percentage() -> float:
     result = virtual_memory().percent
     return result
