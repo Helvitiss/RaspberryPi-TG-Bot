@@ -23,30 +23,29 @@ def get_cpu_percentage() -> float:
     return result
 
 
-def get_top_processes(limit: int = 5) -> List[Dict]:
-    """
-    Возвращает список топ-процессов по CPU (нормализован к 0–100%).
-    """
+import subprocess
 
-    processes: List[Dict] = []
 
-    for proc in psutil.process_iter(attrs=["pid", "name"]):
-        try:
-            cpu = proc.cpu_percent(None)
-            memory = proc.memory_percent()
+def get_top_processes(limit: int = 5) -> str:
+    cmd = [
+        "ps",
+        "-eo", "pid,comm,%cpu,%mem",
+        "--sort=-%cpu"
+    ]
 
-            processes.append({
-                "pid": proc.info["pid"],
-                "name": proc.info["name"] or "unknown",
-                "cpu": round(cpu / psutil.cpu_count(), 1),
-                "memory": round(memory, 1),
-            })
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        check=True
+    )
 
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            continue
+    lines = result.stdout.strip().splitlines()
+    header = lines[0]
+    body = lines[1:limit + 1]
 
-    processes.sort(key=lambda p: p["cpu"], reverse=True)
-    return processes[:limit]
+    return "\n".join([header] + body)
+
 
 
 
