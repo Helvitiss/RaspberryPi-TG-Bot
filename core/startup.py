@@ -5,11 +5,15 @@ from aiogram import Bot
 from core.config import ALLOWED_USERS
 from core.logging_conf import setup_logging, log_start
 from utils.notifications import setup_all_watchers, startup_notification
+from core.warming import warming_up
+
+
 
 
 async def startup(bot: Bot):
     setup_logging()
     log_start()
+    warming_up()
 
     asyncio.create_task(
         setup_all_watchers(bot, ALLOWED_USERS)
