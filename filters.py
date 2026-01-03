@@ -1,7 +1,7 @@
 from aiogram.filters import BaseFilter
 from aiogram.types import Message
 
-from config import ALLOWED_USERS
+from core.config import ALLOWED_USERS
 
 
 class IsAdminFilter(BaseFilter):
