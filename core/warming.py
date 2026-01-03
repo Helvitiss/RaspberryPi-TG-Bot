@@ -12,7 +12,7 @@ def warmup_psutil_cpu() -> None:
     без блокирующих interval > 0.
     """
 
-    logger.info("Warming up psutil CPU counters...")
+    logger.info("Разогреваю psutil")
 
     for proc in psutil.process_iter():
         try:
@@ -23,4 +23,4 @@ def warmup_psutil_cpu() -> None:
     # Также прогреваем общий CPU
     psutil.cpu_percent(None)
 
-    logger.info("psutil CPU warmup completed")
+    logger.info("Разогрев успешный ")

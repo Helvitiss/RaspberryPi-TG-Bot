@@ -24,22 +24,21 @@ def get_cpu_percentage() -> float:
 
 
 def get_top_processes(limit: int = 5) -> List[Dict]:
-    processes = []
+    """
+    Возвращает список топ-процессов по CPU (нормализован к 0–100%).
+    """
 
+    processes: List[Dict] = []
 
-    # Реальный замер
     for proc in psutil.process_iter(attrs=["pid", "name"]):
         try:
-            cpu = proc.cpu_percent(None) / psutil.cpu_count()
+            cpu = proc.cpu_percent(None)
             memory = proc.memory_percent()
-
-            # if cpu == 0:
-            #     continue  # отсекаем мусор для UX
 
             processes.append({
                 "pid": proc.info["pid"],
                 "name": proc.info["name"] or "unknown",
-                "cpu": round(cpu, 1),
+                "cpu": round(cpu / psutil.cpu_count(), 1),
                 "memory": round(memory, 1),
             })
 
@@ -48,6 +47,7 @@ def get_top_processes(limit: int = 5) -> List[Dict]:
 
     processes.sort(key=lambda p: p["cpu"], reverse=True)
     return processes[:limit]
+
 
 
 if __name__ == "__main__":
