@@ -33,8 +33,8 @@ def get_top_processes(limit: int = 5) -> List[Dict]:
             cpu = proc.cpu_percent(None) / psutil.cpu_count()
             memory = proc.memory_percent()
 
-            if cpu == 0:
-                continue  # отсекаем мусор для UX
+            # if cpu == 0:
+            #     continue  # отсекаем мусор для UX
 
             processes.append({
                 "pid": proc.info["pid"],
