@@ -1,7 +1,7 @@
 import asyncio
 import logging
 
-from typing import Callable
+from typing import Callable, List
 from aiogram import Bot
 
 
@@ -10,11 +10,12 @@ from utils.metrics import get_cpu_percentage, get_cpu_temp, get_ram_percentage, 
 
 logger = logging.getLogger(__name__)
 
-async def startup_notification(bot: Bot, admin_id: int):
+async def startup_notification(bot: Bot, admin_ids: List[int]):
     """Отправляет по определенному айди сообщение о запуске системы"""
 
     try:
-        await bot.send_message(admin_id, 'Система запущена')
+        for admin_id in admin_ids:
+            await bot.send_message(admin_id, 'Система запущена')
         logger.info('Уведомление о запуске системы отправлено ')
     except Exception as e:
         logger.exception(e)
@@ -70,7 +71,7 @@ async def watcher(
         threshold : float,
         format_message: Callable,
         bot: Bot,
-        admin_id: int,
+        admin_ids: List[int],
         interval: int = 60
 ) -> None:
     """
@@ -79,7 +80,7 @@ async def watcher(
     :param threshold: порог
     :param format_message: функция форматирования уведомления
     :param bot:  экземпляр Bot
-    :param admin_id: кому отправлять уведомление
+    :param admin_ids: кому отправлять уведомление
     :param interval: интервал с которым будет проведена проверка
     :return: None
     """
@@ -93,7 +94,8 @@ async def watcher(
             value = get_value()
             if value > threshold and not notified:
                 notified = True
-                await bot.send_message(admin_id, format_message(value))
+                for admin_id in admin_ids:
+                    await bot.send_message(admin_id, format_message(value))
                 logger.warning(format_message(value))
             if value < threshold:
                 notified = False
