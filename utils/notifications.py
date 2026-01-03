@@ -23,7 +23,7 @@ async def startup_notification(bot: Bot, admin_ids: List[int]):
 
 
 
-async def setup_all_watchers(bot: Bot, admin_id: int):
+async def setup_all_watchers(bot: Bot, admin_id: List[int]):
     """Функция, которая запускает все процессы мониторинга Малины"""
 
     #Мониторинг нагруженности процессора
@@ -31,7 +31,7 @@ async def setup_all_watchers(bot: Bot, admin_id: int):
                                 get_value=get_cpu_percentage,
                                 threshold=95,
                                 format_message=cpu_alert,
-                                admin_id=admin_id,
+                                admin_ids=admin_id,
                                 bot=bot))
 
     #Мониторинг температуры процессора
@@ -39,7 +39,7 @@ async def setup_all_watchers(bot: Bot, admin_id: int):
                                 get_value=get_cpu_temp,
                                 threshold=75,
                                 format_message=temp_alert,
-                                admin_id=admin_id,
+                                admin_ids=admin_id,
                                 bot=bot))
 
     #Мониторинг количества использования оперативной пямяти
@@ -47,7 +47,7 @@ async def setup_all_watchers(bot: Bot, admin_id: int):
                                 get_value=get_ram_percentage,
                                 threshold=80,
                                 format_message=ram_alert,
-                                admin_id=admin_id,
+                                admin_ids=admin_id,
                                 bot=bot))
 
     #Мониторинг количества свободного места на диске
@@ -55,7 +55,7 @@ async def setup_all_watchers(bot: Bot, admin_id: int):
                                 get_value=get_storage_percentage,
                                 threshold=80,
                                 format_message=disk_alert,
-                                admin_id=admin_id,
+                                admin_ids=admin_id,
                                 bot=bot))
 
 
