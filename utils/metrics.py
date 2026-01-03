@@ -26,12 +26,12 @@ def get_cpu_percentage() -> float:
 def get_top_processes(limit: int = 5) -> List[Dict]:
     processes = []
 
-    # 1️⃣ Прогрев CPU счётчиков
-    for proc in psutil.process_iter():
-        try:
-            proc.cpu_percent(None)
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            continue
+    #Прогрев CPU счётчиков
+    # for proc in psutil.process_iter():
+    #     try:
+    #         proc.cpu_percent(None)
+    #     except (psutil.NoSuchProcess, psutil.AccessDenied):
+    #         continue
 
     time.sleep(0.1)  # короткая пауза
 
