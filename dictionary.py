@@ -32,7 +32,8 @@ def top_msg(process_lines: list) -> str:
     command = 11
     for i in process_lines:
         i = i.split()
-        reply += f'{i[pid]: ^6} {i[cpu]: ^6} {i[mem]: ^6} {i[command]: ^7}\n'
+        reply += f'{i[pid]:>6} {i[cpu]:>6} {i[mem]:>6}   {i[command]:<7}\n'
+
 
     return reply
 
