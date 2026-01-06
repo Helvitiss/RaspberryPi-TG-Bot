@@ -32,7 +32,8 @@ def get_top_processes() -> str:
         text=True,
         check=True
     )
-    return result.stdout.splitlines()[15]
+    print(result.stdout.splitlines())
+    return 'fuck you'
 
 
 if __name__ == "__main__":
