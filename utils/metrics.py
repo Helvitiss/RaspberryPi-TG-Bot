@@ -23,7 +23,7 @@ def get_cpu_percentage() -> float:
     return result
 
 
-def get_top_processes(limit: int = 5) -> str:
+def get_top_processes(limit: int = 10) -> str:
     result = subprocess.run(
         ['top', '-b', '-n', '2'],
         capture_output=True,
@@ -34,6 +34,7 @@ def get_top_processes(limit: int = 5) -> str:
     lines = result.stdout.splitlines()
 
     header_index = None
+    #находим индекс хедера у top
     for i, line in enumerate(lines):
         if line.strip().startswith("PID USER"):
             header_index = i
@@ -44,8 +45,8 @@ def get_top_processes(limit: int = 5) -> str:
 
     process_lines = lines[header_index: header_index + 1 + limit]
 
-    return "\n".join(process_lines)
-
+    # return "\n".join(process_lines)
+    return process_lines
 
 if __name__ == "__main__":
     print(get_top_processes())

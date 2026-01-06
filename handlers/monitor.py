@@ -30,4 +30,4 @@ async def status_handler(message: Message):
 @router.message(F.text == '/top')
 async def top_handler(message: Message):
     msg = await asyncio.to_thread(get_top_processes)
-    await message.answer(msg)
+    await message.answer(str(msg))
