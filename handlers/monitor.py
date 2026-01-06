@@ -25,4 +25,9 @@ async def status_handler(message: Message):
 async def top_handler(message: Message):
     top_lines_list = await asyncio.to_thread(get_top_processes)
     msg = top_msg(top_lines_list)
-    await message.answer(str(msg))
+
+    await message.answer(
+        f"<pre>{msg}</pre>",
+        parse_mode="HTML"
+    )
+
