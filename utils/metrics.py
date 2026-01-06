@@ -1,4 +1,5 @@
 import subprocess
+from typing import List
 
 import psutil
 
@@ -23,7 +24,10 @@ def get_cpu_percentage() -> float:
     return result
 
 
-def get_top_processes(limit: int = 10) -> str:
+def get_top_processes(limit: int = 10) -> List[str]:
+    """
+    Возвращает список строк с информацией о самых ресурсоёмких процессах из утилиты `top`
+    """
     result = subprocess.run(
         ['top', '-b', '-n', '2'],
         capture_output=True,
@@ -47,6 +51,3 @@ def get_top_processes(limit: int = 10) -> str:
 
     # return "\n".join(process_lines)
     return process_lines
-
-if __name__ == "__main__":
-    print(get_top_processes())
