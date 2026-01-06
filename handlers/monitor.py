@@ -12,7 +12,7 @@ router = Router()
 
 @router.message(F.text == '/status')
 async def status_handler(message: Message):
-    cpu =  await asyncio.to_thread(get_cpu_percentage)
+    cpu = '' #await asyncio.to_thread(get_cpu_percentage)
     ram = await asyncio.to_thread(get_ram_percentage)
     disk = await asyncio.to_thread(get_storage_percentage)
     temps = await asyncio.to_thread(get_cpu_temp)
