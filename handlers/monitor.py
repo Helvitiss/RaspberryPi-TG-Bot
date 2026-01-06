@@ -4,8 +4,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from utils.metrics import get_cpu_percentage, get_ram_percentage,get_cpu_temp,get_storage_percentage
-
+from utils.metrics import get_cpu_percentage, get_ram_percentage,get_cpu_temp,get_storage_percentage, get_top_processes
 
 
 
@@ -30,3 +29,7 @@ async def status_handler(message: Message):
     await message.answer(reply)
 
 
+@router.message(F.text == '/top')
+async def top_handler(message: Message):
+    msg = get_top_processes()
+    await message.answer(msg)
