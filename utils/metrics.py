@@ -1,6 +1,5 @@
 import subprocess
 
-
 import psutil
 
 
@@ -18,11 +17,10 @@ def get_storage_percentage() -> float:
     result = psutil.disk_usage('/').percent
     return result
 
+
 def get_cpu_percentage() -> float:
     result = psutil.cpu_percent(interval=1)
     return result
-
-
 
 
 def get_top_processes(limit: int = 5) -> str:
@@ -35,7 +33,6 @@ def get_top_processes(limit: int = 5) -> str:
 
     lines = result.stdout.splitlines()
 
-
     header_index = None
     for i, line in enumerate(lines):
         if line.strip().startswith("PID USER"):
@@ -45,7 +42,7 @@ def get_top_processes(limit: int = 5) -> str:
     if header_index is None:
         return "Не удалось найти таблицу процессов"
 
-    process_lines = lines[header_index + 1 : header_index + 1 + limit]
+    process_lines = lines[header_index: header_index + 1 + limit]
 
     return "\n".join(process_lines)
 
