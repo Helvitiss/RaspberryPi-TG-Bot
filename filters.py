@@ -6,4 +6,8 @@ from core.config import ALLOWED_USERS
 
 class IsAdminFilter(BaseFilter):
     async def __call__(self, message: Message) -> bool:
-        return message.from_user.id in ALLOWED_USERS
+        return str(message.from_user.id) in ALLOWED_USERS
+
+
+
+
