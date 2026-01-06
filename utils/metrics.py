@@ -25,9 +25,15 @@ def get_cpu_percentage() -> float:
 
 
 
-def get_top_processes(limit: int = 5) -> str:
-    cmd_text = subprocess.run('top -b -n 2', capture_output=True, text=True, check=True)
-    return cmd_text.stdout
+def get_top_processes() -> str:
+    result = subprocess.run(
+        ['top', '-b', '-n', '2'],
+        capture_output=True,
+        text=True,
+        check=True
+    )
+    return result.stdout
+
 
 if __name__ == "__main__":
     print(get_top_processes())
