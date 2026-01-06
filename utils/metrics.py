@@ -25,7 +25,7 @@ def get_cpu_percentage() -> float:
 
 
 
-def get_top_processes() -> str:
+def get_top_processes(limit: int = 5) -> str:
     result = subprocess.run(
         ['top', '-b', '-n', '2'],
         capture_output=True,
@@ -33,7 +33,21 @@ def get_top_processes() -> str:
         check=True
     )
 
-    return '\n'.join((result.stdout.splitlines()[:15]))
+    lines = result.stdout.splitlines()
+
+
+    header_index = None
+    for i, line in enumerate(lines):
+        if line.strip().startswith("PID USER"):
+            header_index = i
+            break
+
+    if header_index is None:
+        return "Не удалось найти таблицу процессов"
+
+    process_lines = lines[header_index + 1 : header_index + 1 + limit]
+
+    return "\n".join(process_lines)
 
 
 if __name__ == "__main__":
