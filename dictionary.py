@@ -31,6 +31,12 @@ def top_msg(process_lines: list) -> str:
     mem = 9
     command = 11
     for i in process_lines:
-        reply += f'{i[pid]}, {i[cpu]}, {i[mem]}, {i[command]}\n\n'
+        i = i.split()
+        reply += f'{i[pid]: ^6} {i[cpu]: ^6} {i[mem]: ^6} {i[command]: ^7}\n'
 
     return reply
+
+
+if __name__ == "__main__":
+    a = ['    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND', '      342 root      20   0   25376  14848  10144 S   100.0   100.2   0:02.75 systemd', '      2 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kthreadd', '      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_wo+', '      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+', '      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+', '      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+', '      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+', '      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+', '     12 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker+', '     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker+']
+    print(top_msg(a))
