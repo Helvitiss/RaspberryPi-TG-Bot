@@ -32,3 +32,5 @@ def top_msg(process_lines: list) -> str:
     command = 11
     for i in process_lines:
         reply += f'{i[pid]}, {i[cpu]}, {i[mem]}, {i[command]}\n\n'
+
+    return reply
