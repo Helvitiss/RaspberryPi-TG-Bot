@@ -15,6 +15,7 @@ async def main():
 
     await startup(bot)
 
+
     await dp.start_polling(bot, skip_updates=True)
 
 if __name__ == "__main__":
