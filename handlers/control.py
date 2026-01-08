@@ -1,26 +1,43 @@
+import asyncio
 import subprocess
+from typing import Callable
 
 from aiogram import Router, F
+from aiogram.filters import Command
 from aiogram.types import Message
-
-from config import is_allowed_user
+from filters import IsAdminFilter
+from utils.control import kill_task
 
 router = Router()
 
+router.message.filter(IsAdminFilter())
 
-@router.message(F.text == "/reboot")
+@router.message(Command('Reboot'))
 async def reboot_handler(message: Message):
-    if not is_allowed_user(message.from_user.id):
-        return await message.answer("❌ У вас нет прав.")
-
-    await message.answer("💻 Перезагрузка системы...")
-    subprocess.run("sudo reboot", shell=True)
+    await message.answer(" Перезагрузка системы...")
+    subprocess.run(["sudo","reboot"], shell=True)
 
 
-@router.message(F.text == "/poweroff")
-async def poweroff_handler(message: Message):
-    if not is_allowed_user(message.from_user.id):
-        return await message.answer("❌ У вас нет прав.")
+@router.message(Command('poweroff'))
+async def power_off_handler(message: Message):
+    await message.answer(" Выключение системы...")
+    subprocess.run(['sudo', 'poweroff'], shell=True)
 
-    await message.answer("💻 Выключение системы...")
-    subprocess.run("sudo poweroff", shell=True)
+
+@router.message(Command("kill"))
+async def kill_handler(message: Message):
+    parts = message.text.split()
+
+    if len(parts) < 2:
+        await message.answer("Использование: /kill <PID> [-9]")
+        return
+
+    if not parts[1].isdigit():
+        await message.answer("PID должен быть числом")
+        return
+
+    pid = int(parts[1])
+    force = len(parts) == 3 and parts[2] == "-9"
+
+    result = await asyncio.to_thread(kill_task, pid, force)
+    await message.answer(result)

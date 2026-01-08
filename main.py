@@ -1,29 +1,21 @@
-import asyncio, logging
+import asyncio
 from aiogram import Bot, Dispatcher
 
-
 import handlers
-from config import BOT_TOKEN, ALLOWED_USER
-from logging_conf import setup_logging
-from utils.notifications import startup_notification
-from utils.temperature import temp_watcher
-
-#hello
+from core.config import BOT_TOKEN
+from core.startup import startup
 
 async def main():
-    logger = setup_logging()
 
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
 
     dp.include_router(handlers.monitor_router)
-    asyncio.create_task(
-        temp_watcher(bot, ALLOWED_USER)
-    )
+    dp.include_router(handlers.control_router)
 
+    await startup(bot)
 
-    await startup_notification(bot, ALLOWED_USER)
     await dp.start_polling(bot, skip_updates=True)
-    logging.info("Бот запущен")
+
 if __name__ == "__main__":
     asyncio.run(main())

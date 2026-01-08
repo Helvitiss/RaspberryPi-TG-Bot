@@ -1,41 +1,33 @@
-import subprocess
+import asyncio
 
 from aiogram import Router, F
-from aiogram.filters import Command
 from aiogram.types import Message
-import psutil
 
-from config import is_allowed_user
+from utils.metrics import get_cpu_percentage, get_ram_percentage,get_cpu_temp,get_storage_percentage, get_top_processes
+from dictionary import status_msg, top_msg
 
 router = Router()
 
 
 @router.message(F.text == '/status')
 async def status_handler(message: Message):
-    if not is_allowed_user(message.from_user.id):
-        return message.answer('У вас нет доступа')
+    cpu = await asyncio.to_thread(get_cpu_percentage)
+    ram = get_ram_percentage()
+    disk = get_storage_percentage()
+    temps = get_cpu_temp()
 
+    reply = status_msg(cpu=cpu, ram=ram, disk=disk, temps=temps)
 
-    cpu = psutil.cpu_percent(interval=1)
-    ram = psutil.virtual_memory().percent
-    disk = psutil.disk_usage('/').percent
-    temps = psutil.sensors_temperatures()
-    temp_str = ""
-    if "cpu-thermal" in temps:
-        temp_str = f"{temps['cpu-thermal'][0].current:.1f}°C"
-    elif temps:
-        # берем первую доступную
-        first_sensor = list(temps.values())[0][0]
-        temp_str = f"{first_sensor.current:.1f}°C"
-    else:
-        temp_str = "N/A"
-    reply = (
-        f"💻 Статус системы:\n"
-        f"CPU: {cpu}%\n"
-        f"RAM: {ram}%\n"
-        f"Disk: {disk}%\n"
-        f"Temp: {temp_str}"
-    )
     await message.answer(reply)
 
+
+@router.message(F.text == '/top')
+async def top_handler(message: Message):
+    top_lines_list = await asyncio.to_thread(get_top_processes)
+    msg = top_msg(top_lines_list)
+
+    await message.answer(
+        f"<pre>{msg}</pre>",
+        parse_mode="HTML"
+    )
 
