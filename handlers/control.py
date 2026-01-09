@@ -51,6 +51,5 @@ async def kill_handler(message: Message):
 
 @router.message(Command("update"))
 async def update_handler(message: Message):
-    await message.answer("🔄 Начинаю обновление…")
+    await message.answer("Начинаю обновление…")
     result = await asyncio.to_thread(update_project)
-    await message.answer(result)
