@@ -12,7 +12,7 @@ router = Router()
 
 router.message.filter(IsAdminFilter())
 
-@router.message(Command('Reboot'))
+@router.message(Command('reboot'))
 async def reboot_handler(message: Message):
     await message.answer(" Перезагрузка системы...")
     subprocess.run(["sudo","reboot"], shell=True)
