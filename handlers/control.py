@@ -15,14 +15,18 @@ router.message.filter(IsAdminFilter())
 @router.message(Command('reboot'))
 async def reboot_handler(message: Message):
     await message.answer(" Перезагрузка системы...")
-    subprocess.run(["sudo","reboot"], shell=True)
-
+    subprocess.run(
+        ["systemctl", "reboot"],
+        check=True
+    )
 
 @router.message(Command('poweroff'))
 async def power_off_handler(message: Message):
     await message.answer(" Выключение системы...")
-    subprocess.run(['sudo', 'poweroff'], shell=True)
-
+    subprocess.run(
+        ["systemctl", "poweroff"],
+        check=True
+    )
 
 @router.message(Command("kill"))
 async def kill_handler(message: Message):
