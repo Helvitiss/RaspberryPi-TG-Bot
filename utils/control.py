@@ -1,3 +1,5 @@
+import subprocess
+
 import psutil
 
 
@@ -47,3 +49,26 @@ def kill_task(pid: int, force: bool = False) -> str:
 
     except Exception as e:
         return f" Ошибка: {e}"
+
+
+def update_project() -> str:
+    """
+    Пулит код из гита и перезапускает бота
+    """
+    try:
+        pull = subprocess.run(
+            ["git", "pull"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        subprocess.run(
+            ["systemctl", "restart", "raspberry-bot"],
+            check=True
+        )
+
+        return f"Обновление выполнено:\n{pull.stdout}"
+
+    except subprocess.CalledProcessError as e:
+        return f"Ошибка обновления:\n{e.stderr}"

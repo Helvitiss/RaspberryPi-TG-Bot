@@ -6,7 +6,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
 from filters import IsAdminFilter
-from utils.control import kill_task
+from utils.control import kill_task, update_project
 
 router = Router()
 
@@ -44,4 +44,13 @@ async def kill_handler(message: Message):
     force = len(parts) == 3 and parts[2] == "-9"
 
     result = await asyncio.to_thread(kill_task, pid, force)
+    await message.answer(result)
+
+
+
+
+@router.message(Command("update"))
+async def update_handler(message: Message):
+    await message.answer("🔄 Начинаю обновление…")
+    result = await asyncio.to_thread(update_project)
     await message.answer(result)
