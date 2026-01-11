@@ -21,11 +21,10 @@ def kill_task(pid: int, force: bool = False) -> str:
     try:
         proc = psutil.Process(pid)
 
-        # Защита от kernel threads (Linux)
+        # Защита от kernel threads
         if proc.name().startswith("kworker") or proc.name().startswith("kthreadd"):
             return " Kernel-процессы завершать нельзя"
 
-        # Мягкое завершение
         proc.terminate()
 
         try:
@@ -36,7 +35,6 @@ def kill_task(pid: int, force: bool = False) -> str:
             if not force:
                 return f"⚠ Процесс {pid} не завершился за 3 сек"
 
-            # Жёсткое завершение
             proc.kill()
             proc.wait(timeout=2)
             return f" Процесс {pid} убит принудительно (SIGKILL)"
